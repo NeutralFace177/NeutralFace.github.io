@@ -1,33 +1,35 @@
+
 <html>  
-<head>  
-<title> Password Matching Validation </title>  
-</head>  
-<script>  
-function matchPassword() {  
-  var pw1 = document.getElementById("pswd1");    
-  if(pw1 == "abc")  
-  {   
-    alert("Passwords created successfully");  
-  } else {  
-    alert("No password");  
+  <head>  
+  <title> Password Matching Validation </title>  
+  </head>  
+  <script>  
+  function matchPassword() {  
+    var pw1 = document.getElementById("pswd1").value;
+    console.log(pw1);
+    if(pw1 == "abc")  
+    {   
+      document.location.href = "index.html" 
+    } else {  
+      alert("No bozo");  
+    }  
   }  
-}  
-</script>  
-  
-<body>  
-<center>  
-<form>  
-<!-- Enter Password -->  
-<td> Enter Password </td>  
-<input type = "password" name = "pswd1" id="pswd1"> <br><br>  
-  
-  
-<!?Click to validate confirm password -->  
-<button type = "submit" onclick="matchPassword()">Submit</button>  
-  
-<!-- Click to reset fields -->  
-<button type = "reset" value = "Reset" >Reset</button>  
-</form>  
-</center>  
-</body>  
-</html>
+  </script>  
+    
+  <body>  
+  <center>  
+  <form>  
+  <!-- Enter Password -->  
+  <td> Enter Password </td>  
+  <input type = "password" name = "pswd1" id="pswd1"> <br><br>  
+    
+    
+  <!?Click to validate confirm password -->  
+  <button type = "submit" onclick="matchPassword()">Submit</button>  
+    
+  <!-- Click to reset fields -->  
+  <button type = "reset" value = "Reset" >Reset</button>  
+  </form>  
+  </center>  
+  </body>  
+  </html>
