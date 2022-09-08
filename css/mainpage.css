@@ -6,6 +6,11 @@ p {
 
 }
 
+div {
+    border: 10px;
+    border-color: blue;
+}
+
 #Changelog1 {
     border: 10px;
     border-color: blue;
@@ -13,6 +18,18 @@ p {
 }
 
 #Changelog2 {
+    border: 10px;
+    border-color: blue;
+}
+
+
+.Changelog1 {
+    border: 10px;
+    border-color: blue;
+
+}
+
+.Changelog2 {
     border: 10px;
     border-color: blue;
 }
