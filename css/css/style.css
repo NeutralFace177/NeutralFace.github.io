@@ -50,8 +50,9 @@
 }
 
 .tabbedIn{
-    margin-left: 5%;
+    margin-left: 50%;
     text-indent: 50px;
+    -webkit-text-stroke-color: rgb(0, 255, 255);
 }
 
 a.read:link{
