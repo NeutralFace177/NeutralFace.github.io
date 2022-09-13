@@ -53,6 +53,10 @@
     
 }
 
+.noitalic {
+    font-style: normal;
+}
+
 input[type=submit] {
     padding:5px 15px; 
     background:#999999; 
