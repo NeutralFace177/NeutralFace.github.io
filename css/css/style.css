@@ -68,6 +68,19 @@ input[type=submit] {
     font-weight: 400;
 }
 
+.submit {
+    padding:5px 15px; 
+    background:#999999; 
+    border: 1%px;
+    cursor:pointer;
+    -webkit-border-radius: 50%;
+    border-radius: 10px; 
+    border-color: blue;
+    font-family: 'Comfortaa', cursive;
+    font-size:medium;
+    font-weight: 400;
+}
+
 a.read:link{
     color:blue;
 }
