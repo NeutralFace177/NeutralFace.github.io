@@ -85,6 +85,21 @@ a.table:visited{
     text-decoration: none;
     color:black;
 }
+b.read:link{
+    color:blue;
+}
+b.read:visited{
+    /* color:rgb(0, 0, 97); */
+    color:blue;
+}
+b.table:link{
+    text-decoration: none;
+    color:black;
+}
+b.table:visited{
+    text-decoration: none;
+    color:black;
+}
 .table{
     border-right: 5px rgb(23, 0, 153) solid;
     background-color:rgb(182, 182, 182);
