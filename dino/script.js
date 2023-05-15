@@ -565,7 +565,7 @@ function gameLoop() {
 
 
     // Call the next frame
-    window.requestAnimationFrame(gameLoop);
+   // window.requestAnimationFrame(gameLoop);
 }
 // Start the game loop
 gameLoop();
