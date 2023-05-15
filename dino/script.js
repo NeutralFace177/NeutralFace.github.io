@@ -1,8 +1,8 @@
 // Initialize canvas element
 const canvas = document.getElementById('game_canvas');
 const ctx = canvas.getContext('2d');
-const jspeedInput = document.getElemendById('jspeed');
-const fspeedInput = document.getElemendById('fspeed');
+const jspeedInput = document.getElementById('jspeed');
+const fspeedInput = document.getElementById('fspeed');
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
 canvas.width = 800;
