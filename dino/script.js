@@ -3,6 +3,7 @@ const canvas = document.getElementById('game_canvas');
 const ctx = canvas.getContext('2d');
 const jspeedInput = document.getElementById('jspeed');
 const fspeedInput = document.getElementById('fspeed');
+
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
 canvas.width = 800;
@@ -283,10 +284,12 @@ var animTimer = animTimerMax;
 
 var jumping = false;
 var jumpSpeed = 0.6;
+jspeedInput.value = jumpSpeed;
 var jumpSChange = 1;
 var MaxJumpTime = 12;
 var jumpTime = MaxJumpTime;
 var fallSpeed = 0.2;
+fspeedInput.value = fallSpeed;
 
 var yVelocity = 0;
 let grounded = true;
@@ -433,7 +436,7 @@ function gameLoop() {
 
     centerC = [95 + (cSize[0] / 2), groundC[1] - (cSize[1] / 2)]
 
-    if (groundC[1] >= groundY) {
+    if (groundC[1] >= groundY - 15) {
 
         if (!jumping) {
 
