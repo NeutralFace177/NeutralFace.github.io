@@ -1,6 +1,8 @@
 // Initialize canvas element
 const canvas = document.getElementById('game_canvas');
 const ctx = canvas.getContext('2d');
+const jspeedInput = document.getElemendById('jspeed');
+const fspeedInput = document.getElemendById('fspeed');
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
 canvas.width = 800;
@@ -441,6 +443,23 @@ function gameLoop() {
         }
 
     }
+	
+	if (fspeed.value != null) {
+		try {
+			fallSpeed = parseFloat(fpseed.value);
+		} catch (error) {
+			
+		}
+	}
+	
+	
+	if (jspeed.value != null) {
+		try {
+			jumpSpeed = parseFloat(jspeed.value);
+		} catch (error) {
+			
+		}
+	}
 
     // Clear canvas before each frame
     ctx.fillStyle = 'white'
