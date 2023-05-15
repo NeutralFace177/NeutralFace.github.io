@@ -3,7 +3,7 @@ const canvas = document.getElementById('game_canvas');
 const ctx = canvas.getContext('2d');
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
-canvas.width = 1920;
+canvas.width = 800;
 canvas.height = 600;
 
 var cloudArray = [];
