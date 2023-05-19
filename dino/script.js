@@ -3,14 +3,18 @@ const canvas = document.getElementById('game_canvas');
 const ctx = canvas.getContext('2d');
 const jspeedInput = document.getElementById('jspeed');
 const fspeedInput = document.getElementById('fspeed');
+const speedInput = document.getElementById('speed');
+const speedIncInput = document.getElementById('speedinc');
+
 
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
-canvas.width = 800;
+canvas.width = 1200;
 canvas.height = 600;
 
 var cloudArray = [];
 var cactusArray = [];
+var pterodactylArray = [];
 let alive = true;
 
 var smallY = 504;
@@ -19,6 +23,14 @@ var bigY = 482;
 var fps = document.getElementById("fps");
 var startTime = Date.now();
 var frame = 0;
+
+function distance(x1,y1,x2,y2) {
+    dx = Math.abs(x1-x2);
+    dy = Mat.abs(y1-y2);
+    return Math.sqrt((dx*dx) + (dy*dy));
+    
+}
+
 
 function tick() {
   var time = Date.now();
@@ -156,6 +168,7 @@ class Cactus {
 
 }
 
+   
 class BigCactus extends Cactus {
     constructor(varient) {
         super();
@@ -195,32 +208,117 @@ class SmallCactus extends Cactus {
 
 function generateCacti() {
 
+    
+
+}
+
+let arrayabcd = [400,500,450];
+
+function generation() {
+    let pt = false;
+    let ca = false;
     if (waitCactiR > 0) {
         waitCactiR -= speed * 0.15;
     }
 
     if (waitCactiR <= 0) {
-        let z = Math.round(Math.random() * 2);
-        if (z == 0) {
-            waitCactiR = smallWait;    
-        } else if (z == 1) {
-            waitCactiR = meduimWait;
+        
+        let pORc = Math.round(Math.random() * 3)
+        if (pORc == 3) {
+            pt = true;
+            ca = false;
         } else {
-            waitCactiR = bigWait;
+            pt = false;
+            ca = true;
         }
-        let a = Math.round(Math.random() * 2);
-        if (Math.round(Math.random()) == 0) {
-            c = new SmallCactus(a);
-            console.log("SMOL" + a)
-        } else {
-            c = new BigCactus(a);
-            console.log("BEEG" + a);
+        if (ca) {
+            let z = Math.round(Math.random() * 2);
+            if (z == 0) {
+                waitCactiR = smallWait;    
+            } else if (z == 1) {
+                waitCactiR = meduimWait;
+            } else {
+                waitCactiR = bigWait;
+            }
+            let a = Math.round(Math.random() * 2);
+            if (Math.round(Math.random()) == 0) {
+                c = new SmallCactus(a);
+                console.log("SMOL" + a)
+            } else {
+                c = new BigCactus(a);
+                console.log("BEEG" + a);
+            }
+            
+        }
+        
+        if(pt) {
+            
+            let a = Math.round(Math.random() * 2);
+            
+            let g = Math.round(Math.random() * 2);
+            let h = Math.round(Math.random() * 2);
+            let m = Math.round(Math.random() * 2);
+            if (a == 0) {
+                let pter = new Pterodactyl(canvas.width + 100,arrayabcd[g]);
+                waitCactiR = smallWait;
+            } 
+            if (a == 1) {
+                let pter = new Pterodactyl(canvas.width + 100,arrayabcd[g]);
+                let pter1 = new Pterodactyl(pter.x + 1500, arrayabcd[h]);
+                waitCactiR = bigWait;
+            } else {
+                let pter = new Pterodactyl(canvas.width + 1500,arrayabcd[g]);
+                let pter1 = new Pterodactyl(pter.x + 1500, arrayabcd[h]);
+                let pter2 = new Pterodactyl(pter1.x + 1500, arrayabcd[m]);
+                waitCactiR = bigWait * 3;
+                
+            }
+            
         }
         
 
     }
-
+    
 }
+
+
+class Pterodactyl {
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+        this.cx = x + (92 / 2);
+        this.cy = y + (82 / 2);
+        this.waitMax = 8;
+        this.wait = this.waitMax;
+        this.firstAnim = true;
+        pterodactylArray.push(this);
+    }
+
+    tick() {
+        this.x -= speed;
+        this.cx = this.x + (92 / 2);
+        this.cy = this.y + (82 / 2);
+        if (this.wait > 0) {
+            this.wait--;
+        }
+        if (this.wait <= 0) {
+            this.wait = this.waitMax;
+            this.firstAnim = !this.firstAnim;
+        }
+        if (this.firstAnim) {
+            ctx.drawImage(img,261,15,92,82,this.x,this.y,92,82);
+        } else {
+            ctx.drawImage(img,353,15,92,82,this.x,this.y,92,82);
+        }
+        if (hitboxes) {
+         ctx.fillRect(this.cx,this.cy,5,5);   
+        }
+        
+    }
+    
+}
+
+let pter = new Pterodactyl(2000,400);
 
 
 function hitbox(a) {
@@ -228,6 +326,7 @@ function hitbox(a) {
         hitboxes = true;
     } else {
         hitboxes = false;
+        
     }
 }
 
@@ -244,7 +343,7 @@ let minWaitCloud = 0;
 let maxWaitCR = maxWaitCloud;
 let waitCR = maxWaitCR;
 
-let smallWait = 100;
+let smallWait = 175;
 let meduimWait = 200;
 let bigWait = 250;
 let waitCactiR = smallWait;
@@ -279,21 +378,24 @@ var DinoAnims = ([[1338, 0], //idle       0
 ]);
 var animIndex = 3;
 
-var animTimerMax = 15;
+
+var animTimerMax = 8;
 var animTimer = animTimerMax;
 
 var jumping = false;
-var jumpSpeed = 0.6;
+var jumpSpeed = 1.45;
 jspeedInput.value = jumpSpeed;
 var jumpSChange = 1;
-var MaxJumpTime = 12;
+var MaxJumpTime = 8;
 var jumpTime = MaxJumpTime;
-var fallSpeed = 0.2;
+var fallSpeed = 0.6;
 fspeedInput.value = fallSpeed;
 
 var yVelocity = 0;
 let grounded = true;
-let speed = 5;
+let speed = 10;
+let incSpeed = 0.0005;
+speedInput.value = speed;
 //score
 let xPos = 0;
 let yPos = canvas.height - (20 + 98);
@@ -312,23 +414,43 @@ img.onload = function() {
 }
 ;
 
+
+
+scoreA = document.getElementById("score");
+
 // Add event listeners for player movement
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space') {
         if (grounded && alive) {
             jumping = true;
+            yVelocity = 0;
+        }
+        if (!alive) {
+            xPos = 0;
+            groundC = [95 + (normSize[0] / 2), 578];
+            speed = 10;
+            cloudArray.length = 0;
+            cactusArray.length = 0;
+            alive = true;
         }
 
     }
     if (event.code === "ArrowUp") {
         if (grounded && alive) {
             jumping = true;
+            yVelocity = 0;
         }
     }
 
     if (event.code === "ArrowDown" && alive) {
         downKey = true;
-        can = true;
+        can = true
+        cSize = duckSize;
+    }
+
+    if (event.code === "ArrowRight") {
+       // window.requestAnimationFrame(gameLoop);
+     //   window.requestAnimationFrame(tick);
     }
 });
 
@@ -336,11 +458,18 @@ document.addEventListener('keyup', function(event) {
 
     if (event.code === "ArrowDown") {
         downKey = false;
-
+        cSize = normSize;
         can = true;
     }
 
 })
+
+function die() {
+            alive = false;
+            animIndex = 4;            
+            cSize = normSize();
+}
+
 
 var can = true;
 function animate() {
@@ -401,6 +530,18 @@ function animate() {
 
     wasDucking = ducking;
 
+    if (ducking && animIndex != 5) {
+        if (animIndex != 6 && alive) {
+            animIndex = 5;
+            cSize = duckSize;
+        }
+    }
+
+if (!ducking && (animIndex == 5 || animIndex == 6)) {
+    animIndex = 2;
+    cSize = normSize;
+}
+
 }
 //
 
@@ -427,8 +568,14 @@ function ground() {
 }
 
 function gameLoop() {
-    speed += 0.005;
 
+    if (speed < 25) {
+        incSpeed = (Math.log(incSpeed * 2) + 10) / 500; 
+        console.log ("incr" + incSpeed + " speed" + speed);
+    }
+    
+    
+    
     //center
     //canvas.style.margin = (screenWidth - canvas.width) / 2;
 
@@ -464,6 +611,18 @@ function gameLoop() {
 		}
 	}
 
+    if (speedInput.value != null) {
+
+        try {
+      //      speed = parseFloat(speedInput.value);
+        } catch (error) {
+            
+        }
+        
+    }
+
+    speed = incSpeed + speed;
+    
     // Clear canvas before each frame
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -501,7 +660,7 @@ function gameLoop() {
         const c = new Cloud(canvas.width + 100,Math.random() * 400);
     }
 
-    generateCacti();
+    generation();
 
     for (var i = 0; i < cloudArray.length; i++) {
         cloudArray[i].x -= speed * 0.2;
@@ -514,24 +673,45 @@ function gameLoop() {
 
     for (var j = 0; j < cactusArray.length; j++) {
         try {
+            
             cactusArray[j].tick();
             if (cactusArray[j].x < -100) {
                 cactusArray.splice(j, 1);
             }
 
-            if (Math.hypot(Math.abs(cactusArray[j].x - 95), Math.abs(cactusArray[j].y - yPos)) <= 75) {
-                alive = false;
-                animIndex = 4;
-           //     throw console.warn("YOU DIE NOW!");
-
+            if (Math.hypot(Math.abs(cactusArray[j].cx - centerC[0]), Math.abs(cactusArray[j].cy - centerC[1])) <= 50) {
+                die();
             }
         } catch (error) {
         }
 
     }
 
+    for (var l = 0; l < pterodactylArray.length; l++) {
+        try {
+            pterodactylArray[l].tick();
+            if (pterodactylArray[l].x < -100) {
+                pterodactylArray.splice(l,1);
+            }
+
+            if (Math.hypot(Math.abs(pterodactylArray[l].cx - centerC[0]), Math.abs(pterodactylArray[l].cy - centerC[1])) <= 35) {
+
+                die();
+            }
+            
+        } catch (error) {
+            
+        }
+    } 
+     
+
+
     if (jumping) {
+        if (jumpTime == MaxJumpTime) {
+            yVelocity = 0;
+        }
         jumpTime--;
+        
         if (jumpTime >= 0) {
 
             yVelocity -= jumpSpeed;
@@ -550,7 +730,7 @@ function gameLoop() {
         ducking = false;
     }
 
-    if (ducking) {
+    if (ducking && alive) {
         cSize = duckSize;
     } else {
         cSize = normSize;
@@ -562,17 +742,19 @@ function gameLoop() {
             yVelocity += fallSpeed;
         }
         if (downKey) {
-            yVelocity += fallSpeed * 2;
+            yVelocity += fallSpeed * 4;
         }
 
     }
 
+    scoreA.innerHTML = (-xPos/10).toFixed(1);
+        
     if (groundC[1] > groundY) {
         yVelocity = 0;
         groundC[1] = 578;
     }
 
-    groundC[1] += yVelocity;
+      groundC[1] += yVelocity;
 
     yPos = groundC[1] - cSize[1];
 
@@ -580,14 +762,45 @@ function gameLoop() {
     ctx.drawImage(img, DinoAnims[animIndex][0], DinoAnims[animIndex][1], cSize[0], cSize[1], 95, yPos, cSize[0], cSize[1]);
     ctx.fillStyle = 'red';
     if (hitboxes) {
-        ctx.fillRect(95, yPos, 5, 5);
-        ctx.fillRect(groundC[0], groundC[1], 5, 5)
+        //ctx.fillRect(95, yPos, 5, 5);
+        ctx.fillRect(groundC[0], groundC[1], 5, 5);
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+       // ctx.arc(centerC[0], centerC[1], 50, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fillRect(centerC[0], centerC[1], 5, 5);
     }
+    
+    if (hitboxes) {
+        
+        for (let index = 0; index < canvas.width; index++) {
+            for (let b = 0; b < canvas.height; b++) {
+                if (50 >= Math.hypot(Math.abs(index - centerC[0]), Math.abs(b - centerC[1])) && 
+                    Math.hypot(Math.abs(index - centerC[0]), Math.abs(b - centerC[1])) >= 45) {
+    
+                    ctx.fillRect(index,b,1,1);
+                
+                }
+    
+                if (35 >= Math.hypot(Math.abs(index - centerC[0]), Math.abs(b - centerC[1])) &&
+                   32 <= Math.hypot(Math.abs(index - centerC[0]), Math.abs(b - centerC[1]))) {
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(index,b,1,1);
+                    ctx.fillStyle = 'red';
+                   }
+            }
+        }
+    }
 
+    if (!alive) {
+        animIndex = 4;
+        cSize = normSize;
+        scoreA.innerHTML = "IS U DED";
+    }
 
     // Call the next frame
     window.requestAnimationFrame(gameLoop);
+ 
 }
 // Start the game loop
 gameLoop();
