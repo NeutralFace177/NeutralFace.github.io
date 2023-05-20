@@ -4,7 +4,6 @@ const ctx = canvas.getContext('2d');
 const jspeedInput = document.getElementById('jspeed');
 const fspeedInput = document.getElementById('fspeed');
 const speedInput = document.getElementById('speed');
-const speedIncInput = document.getElementById('speedinc');
 
 
 var screenWidth = window.screen.width;
@@ -212,7 +211,7 @@ function generateCacti() {
 
 }
 
-let arrayabcd = [400,500,450];
+let arrayabcd = [500,472,435];
 
 function generation() {
     let pt = false;
@@ -250,7 +249,6 @@ function generation() {
             }
             
         }
-        
         if(pt) {
             
             let a = Math.round(Math.random() * 2);
@@ -264,13 +262,13 @@ function generation() {
             } 
             if (a == 1) {
                 let pter = new Pterodactyl(canvas.width + 100,arrayabcd[g]);
-                let pter1 = new Pterodactyl(pter.x + 1500, arrayabcd[h]);
+                let pter1 = new Pterodactyl(pter.x + 1000, arrayabcd[h]);
                 waitCactiR = bigWait;
             } else {
-                let pter = new Pterodactyl(canvas.width + 1500,arrayabcd[g]);
-                let pter1 = new Pterodactyl(pter.x + 1500, arrayabcd[h]);
-                let pter2 = new Pterodactyl(pter1.x + 1500, arrayabcd[m]);
-                waitCactiR = bigWait * 3;
+                let pter = new Pterodactyl(canvas.width + 100,arrayabcd[g]);
+                let pter1 = new Pterodactyl(pter.x + 1000, arrayabcd[h]);
+                let pter2 = new Pterodactyl(pter1.x + 1000, arrayabcd[m]);
+                waitCactiR = bigWait * 1.5;
                 
             }
             
@@ -383,18 +381,19 @@ var animTimerMax = 8;
 var animTimer = animTimerMax;
 
 var jumping = false;
-var jumpSpeed = 1.45;
+var jumpSpeed = 2.75;
 jspeedInput.value = jumpSpeed;
-var jumpSChange = 1;
-var MaxJumpTime = 8;
+
+var jumpSChange = 1.45;
+var MaxJumpTime = 5;
 var jumpTime = MaxJumpTime;
-var fallSpeed = 0.6;
+var fallSpeed = 1;
 fspeedInput.value = fallSpeed;
 
 var yVelocity = 0;
 let grounded = true;
 let speed = 10;
-let incSpeed = 0.0005;
+let incSpeed = 0.005;
 speedInput.value = speed;
 //score
 let xPos = 0;
@@ -429,9 +428,9 @@ document.addEventListener('keydown', function(event) {
             xPos = 0;
             groundC = [95 + (normSize[0] / 2), 578];
             speed = 10;
-            cloudArray.length = 0;
-            cactusArray.length = 0;
+            respawn();
             alive = true;
+            
         }
 
     }
@@ -466,8 +465,18 @@ document.addEventListener('keyup', function(event) {
 
 function die() {
             alive = false;
-            animIndex = 4;            
+            animIndex = 4;        
             cSize = normSize();
+}
+
+function respawn() {
+    pterodactylArray = [];
+    cloudArray = [];
+    cactusArray = [];
+    let cloud1 = new Cloud(Math.random() * canvas.width,Math.random() * canvas.height - 200);
+    let cloud2 = new Cloud(Math.random() * canvas.width,Math.random() * canvas.height - 200);
+    let cloud3 = new Cloud(Math.random() * canvas.width,Math.random() * canvas.height - 200);
+    let cloud4 = new Cloud(Math.random() * canvas.width,Math.random() * canvas.height - 200);
 }
 
 
@@ -569,10 +578,7 @@ function ground() {
 
 function gameLoop() {
 
-    if (speed < 25) {
-        incSpeed = (Math.log(incSpeed * 2) + 10) / 500; 
-        console.log ("incr" + incSpeed + " speed" + speed);
-    }
+    
     
     
     
@@ -620,8 +626,15 @@ function gameLoop() {
         }
         
     }
+    
 
-    speed = incSpeed + speed;
+     if (speed < 15) {
+         speed += incSpeed;
+     } else if (speed < 25) {
+         speed += incSpeed/2;
+     } else {
+        speed = 25;
+     }
     
     // Clear canvas before each frame
     ctx.fillStyle = 'white'
@@ -707,7 +720,7 @@ function gameLoop() {
 
 
     if (jumping) {
-        if (jumpTime == MaxJumpTime) {
+        if (jumpTime >= MaxJumpTime) {
             yVelocity = 0;
         }
         jumpTime--;
@@ -747,7 +760,7 @@ function gameLoop() {
 
     }
 
-    scoreA.innerHTML = (-xPos/10).toFixed(1);
+    scoreA.innerHTML = (-xPos/100).toFixed(1);
         
     if (groundC[1] > groundY) {
         yVelocity = 0;
@@ -795,7 +808,6 @@ function gameLoop() {
     if (!alive) {
         animIndex = 4;
         cSize = normSize;
-        scoreA.innerHTML = "IS U DED";
     }
 
     // Call the next frame
